@@ -17,6 +17,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            echo "SSH berhasil!"
-            hostname
-            whoami
+            cd /home/landing-page
+            git pull origin main
+            echo "DONE"
