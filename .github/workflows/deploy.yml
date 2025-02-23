@@ -23,9 +23,8 @@ jobs:
       - name: Deploy ke VPS
         run: |
           ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd /var/www/myapp
+            cd /home/landing-page
             git pull origin main
             npm install  # atau composer install jika PHP
             npm run build  # Sesuaikan dengan project
-            pm2 restart all  # Jika menggunakan PM2
           EOF
