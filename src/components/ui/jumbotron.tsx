@@ -13,14 +13,9 @@ const Jumbotron : React.FC<any> = () => {
                     Konsultasi Sekarang
                 </a>
                 <a href="#" className="px-6 py-3 bg-gray-900 text-white rounded-full shadow-md hover:bg-gray-800 transition">
-                    Lihat Portofolio
+                    Portofolio Kami
                 </a>
                 </div>
-            </div>
-            <div className="col-span-1 flex items-center ">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-                    
-                </h1>
             </div>
         </div>
     </div>

@@ -20,7 +20,8 @@ jobs:
             cd /home/landing-page
             git pull origin main
             docker-compose down
-            docker-compose up -d
+            docker-compose up -d --build
+            docker builder prune -af
             echo "DONE"
   notify:
     needs: build
