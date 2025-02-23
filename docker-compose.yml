@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    container_name: nextjs_app
+    container_name: somdigi_landing_page
     build: .
     ports:
       - "3000:3000"

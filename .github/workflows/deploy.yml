@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  debug:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug SSH Connection
+      - name: Deploy Apps
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -19,4 +19,29 @@ jobs:
           script: |
             cd /home/landing-page
             git pull origin main
+            docker-compose down
+            docker-compose up -d
             echo "DONE"
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kirim Notifikasi ke Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATUS: ${{ job.status }}
+          COMMIT: ${{ github.sha }}
+          AUTHOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ "$STATUS" == "success" ]; then
+            MESSAGE="✅ *CI/CD Berhasil!* 🚀%0A%0A📌 *Repository:* $REPO%0A📝 *Commit:* $COMMIT%0A👤 *By:* $AUTHOR"
+          else
+            MESSAGE="❌ *CI/CD Gagal!* 🔥%0A%0A📌 *Repository:* $REPO%0A📝 *Commit:* $COMMIT%0A👤 *By:* $AUTHOR"
+          fi
+
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+          -d "chat_id=$TELEGRAM_CHAT_ID" \
+          -d "parse_mode=Markdown" \
+          -d "text=$MESSAGE"
