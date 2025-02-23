@@ -3,28 +3,22 @@ name: Deploy ke VPS
 on:
   push:
     branches:
-      - main  # Sesuaikan dengan branch yang ingin di-deploy otomatis
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Deploy ke VPS
-        run: |
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd /home/landing-page
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /home/deploy/somdigi/landing-page
             git pull origin main
-            npm install  # atau composer install jika PHP
-            npm run build  # Sesuaikan dengan project
-          EOF
