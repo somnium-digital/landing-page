@@ -1,6 +1,6 @@
 const Jumbotron : React.FC<any> = () => {
-    return <div className="min-h-[100vh] w-full flex items-center">
-        <div className="grid grid-cols-1 sm:grid-cols-2 h-[100vh]">
+    return <div className="h-screen w-full flex items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
             <div className="col-span-1 flex justify-center flex-col px-10 gap-4">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 ">
                     Tingkatkan Bisnis Anda dengan Solusi Digital Terbaik
